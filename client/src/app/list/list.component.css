@@ -1,0 +1,12 @@
+i { 
+    cursor: pointer;
+}
+table {
+    width: 80%;
+}
+.tasktext {
+    width: 70%;
+}
+input {
+    width: 100%;
+}
