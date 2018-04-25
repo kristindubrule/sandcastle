@@ -10,16 +10,27 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 export class ListComponent implements OnInit {
   newtask: any;
   inputs = {};
+  ioConnection: any;
 
   constructor(private _httpService: HttpService) { }
 
   ngOnInit() {
+    this.initIoConnection();
     this.reset();
     this.getTasks();
   }
   
+  private initIoConnection(): void {
+    this._httpService.initSocket();
+
+    this.ioConnection = this._httpService.onEvent()
+      .subscribe(() => {
+        this.getTasks();
+    });
+  }
+
   reset() {
-    this.newtask = { text: '', status: ''};
+    this.newtask = { taskText: '', status: ''};
   }
 
   getTasks() {

@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 
 // Get gist route
 const api = require('./server/routes/api');
@@ -24,7 +25,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static( __dirname + '/client/dist' ));
 
 // Set our api routes
+app.use(passport.initialize());
+
 app.use('/api', api);
+
+const schedule = require('node-schedule');
+
+// rule.minute = 52;
+var Task = require('./server/models/task');
+var User = require('./server/models/user');
+require('./server/routes/passport');
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
@@ -40,20 +50,26 @@ app.set('port', port);
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port, () => console.log(`API running on localhost:${port}`));
+server.listen(port, () => {
+  console.log(`API running on localhost:${port}`);
+});
 
 /**
  * Socket events
  */
 io.sockets.on('connection', function(socket){
-  console.log('Socket connected');
-  // Socket event for gist created
-  socket.on('gistSaved', function(gistSaved){
-    io.emit('gistSaved', gistSaved);
-  });
+  function expireTasks() {
+    let searchDate = new Date();
+    Task.remove({
+        expires: { $lte: new Date(searchDate.toISOString()) }
+    }, function(err,tasks) {
+        socket.emit('tasks_updated', tasks);
+    });
+  }
 
-  // Socket event for gist updated
-  socket.on('gistUpdated', function(gistUpdated){
-    io.emit('gistUpdated', gistUpdated);
-  });
+  console.log('Socket connected');
+  var rule = new schedule.RecurrenceRule();
+  rule.minute = new schedule.Range(0, 59, 5);
+  var expireTasksJob = schedule.scheduleJob(rule, expireTasks);
+  expireTasks();
 });

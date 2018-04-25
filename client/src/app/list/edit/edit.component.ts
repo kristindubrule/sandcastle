@@ -35,7 +35,7 @@ export class EditComponent implements ControlValueAccessor, OnInit {
   @Input() required: boolean = false; // Is input requried?
   @Input() disabled: boolean = false; // Is input disabled?
   @Input() curValue: any;
-  @Input() id: string;
+  @Input() eid: string;
   @Input() editfield: string;
 
   @Output() aTaskEventEmitter = new EventEmitter();
@@ -60,7 +60,6 @@ export class EditComponent implements ControlValueAccessor, OnInit {
 
   ngOnInit() {
     this._value = this.curValue;
-    this.curValueChanged = new Subject<string>();
   }
 
   // ngOnChanges(changes: SimpleChanges) {
@@ -70,9 +69,8 @@ export class EditComponent implements ControlValueAccessor, OnInit {
   //   }
   // }
 
-  changed(text: string) {
-    this.curValueChanged.next(text);
-    console.log(text);
+  changed(textstr: string) {
+    this.curValueChanged.next(textstr);
   }
 
   // Control Value Accessors for ngModel
@@ -105,7 +103,7 @@ export class EditComponent implements ControlValueAccessor, OnInit {
   // Do stuff when the input element loses focus
   onBlur($event: Event) {
     this.sub.unsubscribe();
-    this.aTaskEventEmitter.emit({id: this.id, editfield: this.editfield, value: this.curValue});
+    this.aTaskEventEmitter.emit({id: this.eid, editfield: this.editfield, value: this.curValue});
     this.editing = false;
   }
 
@@ -115,12 +113,20 @@ export class EditComponent implements ControlValueAccessor, OnInit {
       return;
     }
     this.preValue = value;
+    console.log(value);
     this.editing = true;
-    this.sub = this.curValueChanged.debounceTime(1000) // wait 300ms after the last event before emitting last event
-      .distinctUntilChanged() // only emit if value is different from previous value
-      .subscribe((curValue) => {
-        this.curValue = curValue;
-        this.aTaskEventEmitter.emit({id: this.id, editfield: this.editfield, value: this.curValue});
+    this.curValueChanged = new Subject<string>();
+
+    // this.sub = this.curValueChanged.debounceTime(1000) // wait after the last event before emitting last event
+    //   .distinctUntilChanged() // only emit if value is different from previous value
+    //   .subscribe((curValue) => {
+    //     this.curValue = curValue;
+    //     this.aTaskEventEmitter.emit({id: this.eid, editfield: this.editfield, value: this.curValue});
+    // });
+
+    this.sub = this.curValueChanged.subscribe((curValue) => {
+      this.curValue = curValue;
+      this.aTaskEventEmitter.emit({id: this.eid, editfield: this.editfield, value: this.curValue});
     });
 
     // Focus on the input element just as the editing begins

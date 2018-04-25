@@ -1,6 +1,7 @@
 <div>
     <div *ngIf="editing">
-      <input #inlineEditControl (ngModelChange)='changed($event)' [required]="required" (blur)="onBlur($event)" [name]="editfield" [(ngModel)]="value" [type]="type" [placeholder]="label" />
+      <input #inlineEditControl (ngModelChange)='changed($event)' [required]="required" (blur)="onBlur($event)" [name]="editfield" 
+      [(ngModel)]="value" [type]="type" [placeholder]="label" />
     </div>
     <div *ngIf="!editing">
       <div title="Click to edit" (click)="edit(value)" (focus)="edit(value)" tabindex="0" class="inline-edit">{{value}}</div>

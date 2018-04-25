@@ -2,13 +2,13 @@
 <table class="table table-bordered">
     <tr *ngFor="let tid of objectKeys(inputs)">
       <td class="tasktext">        
-          <app-list-edit [(ngModel)]="inputs[tid].text" label="Task" [curValue]="inputs[tid].text" [id]="tid" editfield="text" [required]="true" type="text"
+          <app-list-edit [(ngModel)]="inputs[tid].taskText" label="Task" [curValue]="inputs[tid].taskText" [eid]="tid" editfield="taskText" [required]="true" type="text"
           (aTaskEventEmitter)="updateTaskDetails($event)" 
           >
           </app-list-edit>
       </td>
       <td>
-          <app-list-edit [(ngModel)]="inputs[tid].status" label="Status" [curValue]="inputs[tid].status" [id]="tid" editfield="status" [required]="true" type="text">
+          <app-list-edit [(ngModel)]="inputs[tid].status" label="Status" [curValue]="inputs[tid].status" [eid]="tid" editfield="status" [required]="true" type="text">
           </app-list-edit>
       </td>
       <td><i (click)="deleteTask(tid)" class="fas fa-minus-circle"></i></td>
@@ -18,7 +18,7 @@
     <table>
       <tr>
           <td class="tasktext">
-              <input [(ngModel)]="newtask.text" name="newtask.text"/>
+              <input [(ngModel)]="newtask.taskText" name="newtask.taskText"/>
           </td>
           <td>
               <input [(ngModel)]="newtask.status" name="newtask.status"/>
