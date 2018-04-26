@@ -33,6 +33,12 @@ UserSchema.methods.generateJwt = function() {
     }, process.env.SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
 };
 
+UserSchema.methods.public = function() {
+    delete this.hash;
+    delete this.salt;
+    return this;
+}
+
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

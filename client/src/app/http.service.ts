@@ -6,7 +6,7 @@ import { AuthenticationService } from './authentication.service';
 import * as io from 'socket.io-client';
 import { map } from 'rxjs/operators/map';
 
-const SERVER_URL = 'http://localhost:8000';
+const SERVER_URL = 'http://localhost:8000/tasks';
 
 @Injectable()
 export class HttpService {
@@ -21,6 +21,7 @@ export class HttpService {
 
   public initSocket(): void {
     this.socket = io(SERVER_URL);
+    console.log(this.socket);
   }
 
   public onEvent(): Observable<any> {

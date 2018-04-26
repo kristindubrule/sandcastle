@@ -144,7 +144,6 @@ router.put('/users/:id/task/:taskId', auth, function(req,res) {
         } else {
             task.taskText = req.body.taskText;
             task.status = req.body.status;
-            console.log(task);
             task.save(function(err) {
                 if (err) {
                     res.json({message: "Error", error: err});
