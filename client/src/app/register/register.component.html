@@ -3,11 +3,11 @@
   <div class="row">
     <div class="col-md-6">
       <h1>Register</h1>
-      <p class="lead">Already a member? Please <a routerLink="/login">log in</a> instead.</p>
+      <p class="lead">Already a user? Please <a routerLink="/login">log in</a> instead.</p>
       <form (submit)="register()">
         <div class="form-group">
-          <label for="name">Full name</label>
-          <input type="text" class="form-control" name="name" placeholder="Enter your name" [(ngModel)]="credentials.name">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" name="username" placeholder="Enter your username" [(ngModel)]="credentials.username">
         </div>
         <div class="form-group">
           <label for="email">Email address</label>

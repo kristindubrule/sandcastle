@@ -10,7 +10,6 @@ const UserSchema = new mongoose.Schema({
     salt: { type: String},
     tasks: [ { type: Schema.Types.ObjectId, ref: 'Task'} ]
 }, {timestamps: true});
-const User = mongoose.model('User', UserSchema);
 
 UserSchema.methods.setPassword = function(password){
     this.salt = crypto.randomBytes(16).toString('hex');
@@ -33,5 +32,7 @@ UserSchema.methods.generateJwt = function() {
       exp: parseInt(expiry.getTime() / 1000),
     }, process.env.SECRET); // DO NOT KEEP YOUR SECRET IN THE CODE!
 };
+
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

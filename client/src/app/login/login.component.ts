@@ -1,24 +1,23 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthenticationService, TokenPayload } from '../authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
-  templateUrl: './register.component.html'
+  templateUrl: './login.component.html'
 })
-export class RegisterComponent {
+export class LoginComponent {
   credentials: TokenPayload = {
-    email: '',
     username: '',
     password: ''
   };
 
   constructor(private auth: AuthenticationService, private router: Router) {}
 
-  register() {
-    this.auth.register(this.credentials).subscribe(() => {
+  login() {
+    this.auth.login(this.credentials).subscribe(() => {
       this.router.navigate(['']);
     }, (err) => {
       console.error(err);
-    });
+    }); 
   }
 }

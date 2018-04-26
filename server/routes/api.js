@@ -15,13 +15,13 @@ const path = require('path');
 const ObjectId = require('mongodb').ObjectID;
 const moment = require('moment-timezone');
 
-// var jwt = require('express-jwt');
-// var auth = jwt({
-//   secret: process.env.SECRET,
-//   userProperty: 'payload'
-// });
+var jwt = require('express-jwt');
+var auth = jwt({
+  secret: process.env.SECRET,
+  userProperty: 'payload'
+});
 
-router.get('/users', function(req, res) {
+router.get('/users', auth, function(req, res) {
     User.find({}).sort([["createdAt",-1]]).exec(function(err,users) {
         if (err) {
             res.json({message: "Error", error: err });
@@ -37,6 +37,9 @@ router.post('/register', function(req,res) {
     user.username = req.body.username;
     user.email = req.body.email;
     user.tasks = [];
+
+    console.log(user);
+    console.log(User);
     user.setPassword(req.body.password);
     user.save(function(err) {
         if (err) {
@@ -83,9 +86,10 @@ router.get('/tasks/date', function(req,res) {
     });
 });
 
-router.post('/users/:id/task', function(req,res) {
+router.post('/users/:id/task', auth, function(req,res) {
     User.findOne({_id: req.params.id}, function(err, user) {
         var task = new Task(req.body);
+        console.log(task);
         if (testing) {
             var today = moment();
         } else {
@@ -112,7 +116,8 @@ router.post('/users/:id/task', function(req,res) {
     })
 });
 
-router.get('/users/:id/task', function(req,res) {
+router.get('/users/:id/task', auth, function(req,res) {
+    // console.log('user id? ' + req.payload._id);
    User.findById({ _id: ObjectId(req.params.id) }).populate({path: 'tasks'}).exec(function(err,user) {
         if (err) {
             res.json({message: "Error", error: err });
@@ -122,7 +127,7 @@ router.get('/users/:id/task', function(req,res) {
     });
 });
 
-router.delete('/users/:id/task/:taskId', function(req,res) {
+router.delete('/users/:id/task/:taskId', auth, function(req,res) {
     Task.findByIdAndRemove({_id: ObjectId(req.params.taskId), _user: ObjectId(req.params.id) }, function(err,author) {
         if (err) {
             res.json({message: "Error", error: err});
@@ -132,7 +137,7 @@ router.delete('/users/:id/task/:taskId', function(req,res) {
     });
 })
 
-router.put('/users/:id/task/:taskId', function(req,res) {
+router.put('/users/:id/task/:taskId', auth, function(req,res) {
     Task.findOne({_id: ObjectId(req.params.taskId)}, function(err,task) {
         if (err) {
             res.json({message: "Error", error: err});

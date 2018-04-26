@@ -8,7 +8,8 @@
           </app-list-edit>
       </td>
       <td>
-          <app-list-edit [(ngModel)]="inputs[tid].status" label="Status" [curValue]="inputs[tid].status" [eid]="tid" editfield="status" [required]="true" type="text">
+          <app-list-edit [(ngModel)]="inputs[tid].status" label="Status" [curValue]="inputs[tid].status" [eid]="tid" editfield="status" [required]="true" type="text"
+           (aTaskEventEmitter)="updateTaskDetails($event)">
           </app-list-edit>
       </td>
       <td><i (click)="deleteTask(tid)" class="fas fa-minus-circle"></i></td>

@@ -117,16 +117,11 @@ export class EditComponent implements ControlValueAccessor, OnInit {
     this.editing = true;
     this.curValueChanged = new Subject<string>();
 
-    // this.sub = this.curValueChanged.debounceTime(1000) // wait after the last event before emitting last event
-    //   .distinctUntilChanged() // only emit if value is different from previous value
-    //   .subscribe((curValue) => {
-    //     this.curValue = curValue;
-    //     this.aTaskEventEmitter.emit({id: this.eid, editfield: this.editfield, value: this.curValue});
-    // });
-
-    this.sub = this.curValueChanged.subscribe((curValue) => {
-      this.curValue = curValue;
-      this.aTaskEventEmitter.emit({id: this.eid, editfield: this.editfield, value: this.curValue});
+    this.sub = this.curValueChanged.debounceTime(1000) // wait after the last event before emitting last event
+      .distinctUntilChanged() // only emit if value is different from previous value
+      .subscribe((curValue) => {
+        this.curValue = curValue;
+        this.aTaskEventEmitter.emit({id: this.eid, editfield: this.editfield, value: this.curValue});
     });
 
     // Focus on the input element just as the editing begins
