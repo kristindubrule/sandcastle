@@ -6,7 +6,7 @@ import { AuthenticationService } from './authentication.service';
 import * as io from 'socket.io-client';
 import { map } from 'rxjs/operators/map';
 
-const SERVER_URL = 'http://localhost:8000/tasks';
+const SERVER_URL = 'http://localhost:8000';
 
 @Injectable()
 export class HttpService {
@@ -20,8 +20,13 @@ export class HttpService {
   }
 
   public initSocket(): void {
-    this.socket = io(SERVER_URL);
-    console.log(this.socket);
+    this.socket = io.connect(SERVER_URL, {query: 'token=' + this.auth.getToken()});
+    //this.socket = io.connect(SERVER_URL);
+    this.socket.on('connect', function () {
+      console.log('socket authenticated');
+    }).on('disconnect', function () {
+      console.log('socket disconnected');
+    });
   }
 
   public onEvent(): Observable<any> {
