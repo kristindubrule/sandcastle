@@ -7,12 +7,11 @@
               <input [(ngModel)]="newtask.taskText" name="newtask.taskText" placeholder="Task"/>
           </td>
           <td class="taskcol">
-            <select [(ngModel)]="newtask._user" name="newtask._user">
+            <select class="btn btn-drop" [(ngModel)]="newtask._user" name="newtask._user">
                 <option *ngFor="let user of users" [value]="user._id">{{user.username}}</option>
             </select>
           </td>
       </tr>
     </table>
     <button class="btn btn-add">Add</button>
-    <button class="btn btn-add" routerLink=''>Cancel</button>
 </form>

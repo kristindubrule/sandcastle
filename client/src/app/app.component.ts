@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 	import { HttpService } from './http.service';
-	import { ActivatedRoute, Params, Router } from '@angular/router';
+	import { ActivatedRoute, Params, Router, NavigationEnd } from '@angular/router';
   import { AuthenticationService } from './authentication.service';
 
 @Component({
@@ -9,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private _httpService: HttpService,
+  page: string;
+  
+  constructor(public _httpService: HttpService,
     public auth: AuthenticationService,
     private _route: ActivatedRoute,
     private _router: Router) {}
@@ -17,9 +19,15 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     if(!this.auth.isLoggedIn()) {
       this._router.navigate(['login']);
-    } else {
-      console.log('all good');
     }
+
+    this._router.events.subscribe(event => {
+      console.log('Load parent');
+      console.log(event);
+      if (event instanceof NavigationEnd) {
+        this.page = event.url;
+      }
+    });
   }
 
   // callLogout() {

@@ -12,7 +12,8 @@
             <span class="title">Do These Things</span>
         </div>
         <div class="nav">
-                <p class="nav"><a routerLink="/other-users">Send Tasks&nbsp;</a></p> |
+                <p *ngIf="page != '/other-users'" class="nav"><a routerLink="/other-users">Send Tasks</a>&nbsp; |</p>
+                <p *ngIf="page == '/other-users'" class="nav"><a routerLink=''>Home</a>&nbsp; |</p>
                 <p class="nav" *ngIf="!auth.isLoggedIn()"><a routerLink="/login">Sign in</a></p>
                 <p class="nav" *ngIf="auth.isLoggedIn()"><a routerLink=''>{{ auth.getUserDetails()?.username }}</a></p>
                 <p class="nav" *ngIf="auth.isLoggedIn()"><a (click)="auth.logout()">Logout</a></p>
@@ -22,3 +23,5 @@
         <router-outlet></router-outlet>
         <div class="footer"><a href="https://fontawesome.com/license">Font Awesome Icons</a></div>
 </div>
+
+<!--   -->

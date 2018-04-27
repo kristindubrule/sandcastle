@@ -10,7 +10,8 @@ const SERVER_URL = 'http://localhost:8000';
 
 @Injectable()
 export class HttpService {
-  // user = "5ae0f30707289380fe17d6ad";
+  private page: string;
+
   private socket: SocketIOClient.Socket; // The client instance of socket.io
 
   constructor(private _http: HttpClient, private auth: AuthenticationService) { 
@@ -27,6 +28,14 @@ export class HttpService {
     }).on('disconnect', function () {
       console.log('socket disconnected');
     });
+  }
+
+  public setPage(pageName: string) {
+    this.page = pageName;
+  }
+
+  public getPage() : string {
+    return this.page;
   }
 
   public onEvent(): Observable<any> {

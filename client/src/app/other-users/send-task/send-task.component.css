@@ -18,3 +18,6 @@ input {
 .statustext, .deleteicon {
     border: 1px solid gray;
 }
+.btn-drop {
+    background-color: #CACAD4;
+}

@@ -15,6 +15,7 @@ export class ListComponent implements OnInit {
   constructor(private _httpService: HttpService) { }
 
   ngOnInit() {
+    this._httpService.setPage('list');
     this.initIoConnection();
     this.reset();
     this.getTasks();
@@ -80,5 +81,11 @@ export class ListComponent implements OnInit {
 
   objectKeys(obj) {
     return Object.keys(obj);
+  }
+
+  toggleStatus(taskId: string) {
+    let task = this.inputs[taskId];
+    task.status = ((task.status == 'Done') ? 'Not done' : 'Done');
+    this.updateTask(taskId);
   }
 }

@@ -19,6 +19,7 @@ export class SendTaskComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this._httpService.setPage('sendTasks');
     this.getUsers();
   }
 
