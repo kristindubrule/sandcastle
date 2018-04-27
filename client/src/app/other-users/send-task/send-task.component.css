@@ -1,0 +1,20 @@
+table {
+    width: 70%;
+    background: none;
+    border: 1px solid gray;
+}
+.tasktext {
+    width: 70%;
+    border: 1px solid gray;
+}
+input {
+    width: 100%;
+    background: none;
+    border: none;
+}
+.taskcol {
+    border: 1px solid gray;
+}
+.statustext, .deleteicon {
+    border: 1px solid gray;
+}

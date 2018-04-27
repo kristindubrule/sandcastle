@@ -22,9 +22,9 @@ var auth = jwt({
 });
 
 router.get('/users', auth, function(req, res) {
-    User.find({}).sort([["createdAt",-1]]).exec(function(err,users) {
+    User.find({}).sort([["username",1]]).exec(function(err,users) {
         if (err) {
-            res.json({message: "Error", error: err });
+            res.json({message: "Error", error: err.errors });
         } else {
             res.json({message: "Success", users: users});
         }
@@ -96,13 +96,15 @@ router.post('/users/:id/task', auth, function(req,res) {
             var today = moment().startOf('day');
         }
         task.added = today;
-        task.expires = moment(today).add(expireIncrement, expireUnit);     
+        task.expires = moment(today).add(expireIncrement, expireUnit);   
         task._user = user._id;
-        task.adder = user._id;
         task.save(function (err) {
             if (err) {
                 res.json({message: "Error", errors: task.errors});
             } else {
+                if (task._user != task.adder) {
+                    console.log('for someone else');
+                }
                 user.tasks.push(task);
                 user.save(function(err) {
                     if (err) {

@@ -1,7 +1,15 @@
 <div>
     <div *ngIf="editing">
-      <input #inlineEditControl (ngModelChange)='changed($event)' [required]="required" (blur)="onBlur($event)" [name]="editfield" 
-      [(ngModel)]="value" [type]="type" [placeholder]="label" />
+      <div *ngIf="type=='text'">
+        <input #inlineEditControl (ngModelChange)='changed($event)' [required]="required" (blur)="onBlur($event)" [name]="editfield" 
+        [(ngModel)]="value" [type]="type" [placeholder]="label" />
+      </div>
+      <div *ngIf="type=='checkbox'">
+          <!-- [checked]="user.toggle === toggles[0].value" (change)="$event.target.checked? (user.toggle = toggles[0].value) : (user.toggle = toggles[1].value)" -->
+          <input #inlineEditControl (ngModelChange)='changed($event)' (click)="toggleCheckbox()" [required]="required" (focusout)="onBlur($event)" [name]="editfield" 
+          [checked]="value=='Done'"
+          [(ngModel)]="value" [type]="type" [placeholder]="label" />
+      </div>
     </div>
     <div *ngIf="!editing">
       <div title="Click to edit" (click)="edit(value)" (focus)="edit(value)" tabindex="0" class="inline-edit">{{value}}</div>

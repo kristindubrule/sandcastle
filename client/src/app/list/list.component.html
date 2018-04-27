@@ -1,31 +1,33 @@
 
-<table class="table table-bordered">
-    <tr *ngFor="let tid of objectKeys(inputs)">
+<div id="taskbox" *ngIf="objectKeys(inputs).length>0">
+    <h3>Already chosen</h3>
+<table class="table tasktable">
+    <tr *ngFor="let tid of objectKeys(inputs)" 
+        class="{{((inputs[tid]._user == inputs[tid].adder) ? 'own' : 'other')}} {{((inputs[tid].status == 'Done') ? 'done' : '')}}">
       <td class="tasktext">        
-          <app-list-edit [(ngModel)]="inputs[tid].taskText" label="Task" [curValue]="inputs[tid].taskText" [eid]="tid" editfield="taskText" [required]="true" type="text"
-          (aTaskEventEmitter)="updateTaskDetails($event)" 
+          <app-list-edit [(ngModel)]="inputs[tid].taskText" label="Task" [curValue]="inputs[tid].taskText" [eid]="tid" editfield="taskText" [required]="true" 
+          type="text" (aTaskEventEmitter)="updateTaskDetails($event)" 
           >
           </app-list-edit>
       </td>
-      <td>
-          <app-list-edit [(ngModel)]="inputs[tid].status" label="Status" [curValue]="inputs[tid].status" [eid]="tid" editfield="status" [required]="true" type="text"
-           (aTaskEventEmitter)="updateTaskDetails($event)">
+      <td class="statustext">
+          <app-list-edit [(ngModel)]="inputs[tid].status" label="Status" [curValue]="inputs[tid].status" [eid]="tid" editfield="status" [required]="true" 
+          type="checkbox" (aTaskEventEmitter)="updateTaskDetails($event)">
           </app-list-edit>
-      </td>
-      <td><i (click)="deleteTask(tid)" class="fas fa-minus-circle"></i></td>
+      </td>   
+      <td class="deleteicon"><i (click)="deleteTask(tid)" class="fas fa-minus-circle"></i></td>
     </tr>
   </table>
+</div>
   <form id="add" (submit)="addTask()">
-    <table>
-      <tr>
+    <h3>Choose carefully</h3>
+    <table class="table">
+      <tr class="newtask">
           <td class="tasktext">
-              <input [(ngModel)]="newtask.taskText" name="newtask.taskText"/>
+              <input [(ngModel)]="newtask.taskText" name="newtask.taskText" class="textinput" placeholder="Next task"/>
           </td>
-          <td>
-              <input [(ngModel)]="newtask.status" name="newtask.status"/>
-          </td>
-          <td>
-            <button class="btn btn-info">Add</button>
+          <td class="deleteicon">
+            <button class="btn btn-add">Add</button>
           </td>
       </tr>
     </table>

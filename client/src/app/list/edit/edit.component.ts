@@ -31,7 +31,7 @@ import { Component,
 export class EditComponent implements ControlValueAccessor, OnInit {
   @ViewChild('inlineEditControl') inlineEditControl; // input DOM element
   @Input() label: string = '';  // Label value for input element
-  @Input() type: string = 'text'; // The type of input element
+  @Input() type; // The type of input element
   @Input() required: boolean = false; // Is input requried?
   @Input() disabled: boolean = false; // Is input disabled?
   @Input() curValue: any;
@@ -42,10 +42,10 @@ export class EditComponent implements ControlValueAccessor, OnInit {
 
   private _value: string = ''; // Private variable for input value
   private preValue: string = ''; // The value before clicking to edit
-  private editing: boolean = false; // Is Component in edit mode?
+  public editing: boolean = false; // Is Component in edit mode?
   public onChange: any = Function.prototype; // Trascend the onChange event
   public onTouched: any = Function.prototype; // Trascend the onTouch event
-  curValueChanged: Subject<string> = new Subject<string>();
+  curValueChanged: Subject<any> = new Subject<any>();
   sub: Subscription;
 
   //public $changeValues  = new BehaviorSubject<string>(this.ngOnChanges(changes));
@@ -69,7 +69,7 @@ export class EditComponent implements ControlValueAccessor, OnInit {
   //   }
   // }
 
-  changed(textstr: string) {
+  changed(textstr: any) {
     this.curValueChanged.next(textstr);
   }
 
@@ -113,11 +113,10 @@ export class EditComponent implements ControlValueAccessor, OnInit {
       return;
     }
     this.preValue = value;
-    console.log(value);
     this.editing = true;
-    this.curValueChanged = new Subject<string>();
+    this.curValueChanged = new Subject<any>();
 
-    this.sub = this.curValueChanged.debounceTime(1000) // wait after the last event before emitting last event
+    this.sub = this.curValueChanged.debounceTime(2500) // wait after the last event before emitting last event
       .distinctUntilChanged() // only emit if value is different from previous value
       .subscribe((curValue) => {
         this.curValue = curValue;
@@ -128,5 +127,10 @@ export class EditComponent implements ControlValueAccessor, OnInit {
     // setTimeout(_ => this._renderer.invokeElementMethod(this.inlineEditControl,
     //   'focus', []));
     setTimeout( () => this.inlineEditControl.nativeElement.focus());
+  }
+
+  toggleCheckbox() {
+    this.curValue = (this.curValue == 'Not done') ? 'Done' : 'Not done';
+    this.changed(this.curValue);
   }
 }

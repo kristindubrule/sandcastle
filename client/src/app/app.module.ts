@@ -14,6 +14,8 @@ import { ListComponent } from './list/list.component';
 import { EditComponent } from './list/edit/edit.component';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { OtherUsersComponent } from './other-users/other-users.component';
+import { SendTaskComponent } from './other-users/send-task/send-task.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { LoginComponent } from './login/login.component';
     ListComponent,
     EditComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    OtherUsersComponent,
+    SendTaskComponent
   ],
   imports: [
     BrowserModule,

@@ -124,15 +124,30 @@ function sendTasksUpdated() {
   }
 }
 
+function taskUpdateUser(userId) {
+  console.log(userId);
+  for (let socketObj of sockets) {
+    if (socketObj['user'] == userId) {
+      socketObj['socket'].emit('tasks_updated');
+    }
+  }
+}
+
 var rule = new schedule.RecurrenceRule();
 rule.minute = new schedule.Range(0, 59, 5);
 var expireTasksJob = schedule.scheduleJob(rule, expireTasks);
 expireTasks();
 
 io.sockets.on('connection', function (socket) {
-  console.log('****** Request ');
-  console.log(socket.request.decoded_token._id);
   sockets.push({ user: socket.request.decoded_token._id, socket: socket });
   // console.log(socket.handshake.decoded_token.email, 'connected');
   // socket.on('event');
+
+  socket.on('sendTask', function(data) {
+    console.log(data);
+    taskUpdateUser(data['userId']);
+    // user_counter++;
+    // players.push(new Player(data.name,user_counter));
+    // socket.emit('your_id', { id : user_counter });
+});
 });

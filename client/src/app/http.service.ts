@@ -42,6 +42,7 @@ export class HttpService {
   }
 
   addTask(task: any) {
+    task.adder = this.auth.getUserDetails()._id;
     return this._http.post('/api/users/' + this.auth.getUserDetails()._id + '/task', task, { headers: { Authorization: `Bearer ${this.auth.getToken()}` } });
   }
 
@@ -51,5 +52,22 @@ export class HttpService {
 
   updateTask(task: any) {
     return this._http.put('/api/users/' + this.auth.getUserDetails()._id + '/task/' + task._id, task, { headers: { Authorization: `Bearer ${this.auth.getToken()}` } });
+  }
+
+  getUsers() {
+    return this._http.get('/api/users', { headers: { Authorization: `Bearer ${this.auth.getToken()}` } } );
+  }
+
+  sendTask(task: any) {
+    console.log(this.socket.connected);
+    task.adder = this.auth.getUserDetails()._id;
+    return this._http.post('/api/users/' + task._user + '/task', task, { headers: { Authorization: `Bearer ${this.auth.getToken()}` } });
+  }
+
+  pushTaskUpdate(userId: string) {
+    if (!this.socket.connected) {
+      this.initSocket();
+    }
+    this.socket.emit('sendTask', {userId: userId}, {query: 'token=' + this.auth.getToken()});
   }
 }

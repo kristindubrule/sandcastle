@@ -1,14 +1,24 @@
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+<link rel="icon" type="image/jpg" href="sandcastle_favicon.jpg">
 
 <div id="wrapper">
+    <div id="header">
+        <div id="logobox">
+            <img src="../assets/fort-awesome.svg" class="logo" />
+        </div>
+        <div id="title">
+            <span class="title">Do These Things</span>
+        </div>
+        <div class="nav">
+                <p class="nav"><a routerLink="/other-users">Send Tasks&nbsp;</a></p> |
+                <p class="nav" *ngIf="!auth.isLoggedIn()"><a routerLink="/login">Sign in</a></p>
+                <p class="nav" *ngIf="auth.isLoggedIn()"><a routerLink=''>{{ auth.getUserDetails()?.username }}</a></p>
+                <p class="nav" *ngIf="auth.isLoggedIn()"><a (click)="auth.logout()">Logout</a></p>
+        </div>
+    </div>
 
-<ul class="nav navbar-nav navbar-right signin">
-    <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login">Sign in</a></li>
-    <li *ngIf="auth.isLoggedIn()"><a routerLink=''>{{ auth.getUserDetails()?.username }}</a></li>
-    <li *ngIf="auth.isLoggedIn()"><a (click)="auth.logout()">Logout</a></li>
-</ul>
-
-    <router-outlet></router-outlet>
-    <a href="https://fontawesome.com/license">Font Awesome Icons</a>
+        <router-outlet></router-outlet>
+        <div class="footer"><a href="https://fontawesome.com/license">Font Awesome Icons</a></div>
 </div>

@@ -2,11 +2,36 @@ i {
     cursor: pointer;
 }
 table {
-    width: 80%;
+    width: 70%;
+    background: none;
+    border: 1px solid gray;
+}
+
+input {
+    width: 100%;
+    background: none;
+    border: none;
+}
+::ng-deep .textinput {
+    vertical-align: middle;
+}
+.newtask {
+    vertical-align: middle;
+    line-height: 100%;
 }
 .tasktext {
     width: 70%;
+    border: 1px solid gray;
 }
-input {
-    width: 100%;
+.statustext, .deleteicon {
+    border: 1px solid gray;
+}
+.own {
+}
+.other {
+    color: #7D6A66;
+}
+.done {
+    text-decoration: line-through;
+    color: #CACAD4;
 }

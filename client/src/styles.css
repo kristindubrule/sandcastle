@@ -1,2 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
-@import '~angular2-toaster/toaster.css';
+* {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+}
+input {
+    background: none;
+}
+.btn-login {
+    background-color: #CFE69B;
+    color: #717076;
+}
+#forminput, #emailinput {
+    width: 70%;
+}
+.btn-add {
+    background-color: #CFE69B;
+    color: #717076;
+}
+.tasktable {
+    border: 1px solid gray;
+    background: none;
+    margin-top: 20px;
+}

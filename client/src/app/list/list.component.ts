@@ -30,7 +30,7 @@ export class ListComponent implements OnInit {
   }
 
   reset() {
-    this.newtask = { taskText: '', status: ''};
+    this.newtask = { taskText: '' };
   }
 
   getTasks() {
@@ -46,8 +46,12 @@ export class ListComponent implements OnInit {
   addTask() {
     let obs = this._httpService.addTask(this.newtask);
     obs.subscribe( data => {
-      this.getTasks();
-      this.reset();
+      if (data['errors']) {
+        console.log(data['errors']);
+      } else {
+        this.getTasks();
+        this.reset();
+      }
     });
   }
 
