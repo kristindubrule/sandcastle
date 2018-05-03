@@ -40,6 +40,7 @@
     "express-jwt": "^5.3.1",
     "express-session": "^1.15.6",
     "graceful-fs": "^4.1.11",
+    "hoek": "^5.0.3",
     "http-status": "^1.0.1",
     "jsonwebtoken": "^8.2.1",
     "moment": "^2.22.1",
