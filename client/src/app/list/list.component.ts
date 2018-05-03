@@ -45,6 +45,8 @@ export class ListComponent implements OnInit {
   }
 
   addTask() {
+    this.newtask.added = new Date();
+    console.log(this.newtask.added);
     let obs = this._httpService.addTask(this.newtask);
     obs.subscribe( data => {
       if (data['errors']) {

@@ -1,6 +1,6 @@
-const expireIncrement = 5;
-const expireUnit = 'minutes';
-const testing = true;
+const expireIncrement = 1;
+const expireUnit = 'days';
+const testing = false;
 
 const express = require('express');
 const router = express.Router();
@@ -89,15 +89,14 @@ router.get('/tasks/date', function(req,res) {
 router.post('/users/:id/task', auth, function(req,res) {
     User.findOne({_id: req.params.id}, function(err, user) {
         var task = new Task(req.body);
-        console.log(task);
         if (testing) {
-            var today = moment();
+            var today = moment(task.added);
         } else {
-            var today = moment().startOf('day');
+            var today = moment(task.added).startOf('day');
         }
-        task.added = today;
-        task.expires = moment(today).add(expireIncrement, expireUnit);   
+        task.expires = moment(today).add(expireIncrement, expireUnit);
         task._user = user._id;
+        console.log(task);
         task.save(function (err) {
             if (err) {
                 res.json({message: "Error", errors: task.errors});

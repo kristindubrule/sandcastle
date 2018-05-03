@@ -134,7 +134,7 @@ function taskUpdateUser(userId) {
 }
 
 var rule = new schedule.RecurrenceRule();
-rule.minute = new schedule.Range(0, 59, 5);
+rule.hour = new schedule.Range(0, 11, 1);
 var expireTasksJob = schedule.scheduleJob(rule, expireTasks);
 expireTasks();
 
