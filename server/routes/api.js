@@ -89,14 +89,18 @@ router.get('/tasks/date', function(req,res) {
 router.post('/users/:id/task', auth, function(req,res) {
     User.findOne({_id: req.params.id}, function(err, user) {
         var task = new Task(req.body);
+        console.log(req.body.timezone);
         if (testing) {
-            var today = moment(task.added);
+            var today = moment.tz(task.added, req.body.timezone);
         } else {
-            var today = moment(task.added).startOf('day');
+            var today = moment.tz(task.added, req.body.timezone).startOf('day');
         }
-        task.expires = moment(today).add(expireIncrement, expireUnit);
+        console.log('Today');
+        console.log(today);
+        task.expires = moment(today, req.body.timezone).add(expireIncrement, expireUnit);
+        console.log('Expires');
+        console.log(task.expires);
         task._user = user._id;
-        console.log(task);
         task.save(function (err) {
             if (err) {
                 res.json({message: "Error", errors: task.errors});

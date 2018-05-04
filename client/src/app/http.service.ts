@@ -52,6 +52,7 @@ export class HttpService {
 
   addTask(task: any) {
     task.adder = this.auth.getUserDetails()._id;
+    console.log(task.timezone);
     return this._http.post('/api/users/' + this.auth.getUserDetails()._id + '/task', task, { headers: { Authorization: `Bearer ${this.auth.getToken()}` } });
   }
 

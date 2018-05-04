@@ -33,31 +33,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(express.static(path.join(__dirname, 'dist')));
 app.use(express.static( __dirname + '/client/dist' ));
 
-// Express session middleware
-// app.use(session({
-//   store: sessionStore,
-//   resave: false,
-//   saveUninitialized: false,
-//   cookie: {
-//     secure: process.env.ENVIRONMENT !== 'development' && process.env.ENVIRONMENT !== 'test',
-//     maxAge: 2419200000
-//   },
-//   secret: process.env.SECRET_KEY_BASE
-// }));
-
-// // Below express-session middleware
-// // Pass just the user id to the passport middleware
-// passport.serializeUser(function(user, done) {
-//   done(null, user.id);
-// });
-
-// // Reading your user base ont he user.id
-// passport.deserializeUser(function(id, done) {
-//   User.get(id).run().then(function(user) {
-//     done(null, user.public());
-//   });
-// });
-
 // Set our api routes
 app.use(passport.initialize());
 app.use(passport.session());
@@ -149,5 +124,5 @@ io.sockets.on('connection', function (socket) {
     // user_counter++;
     // players.push(new Player(data.name,user_counter));
     // socket.emit('your_id', { id : user_counter });
-});
+  });
 });

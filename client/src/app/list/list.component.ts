@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../http.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import * as moment from 'moment-timezone';
 
 @Component({
   selector: 'app-list',
@@ -46,6 +47,8 @@ export class ListComponent implements OnInit {
 
   addTask() {
     this.newtask.added = new Date();
+    this.newtask.timezone = moment.tz.guess();
+    console.log(this.newtask.timezone);
     console.log(this.newtask.added);
     let obs = this._httpService.addTask(this.newtask);
     obs.subscribe( data => {
