@@ -2,15 +2,18 @@
   <div>
     <div>
       <h1>Sign in</h1>
+      <p *ngFor='let message of messages' class='error'>
+          {{message}}
+        </p>
       <p>Not a member? Please <a routerLink="/register">register</a> instead.</p>
       <form (submit)="login()">
         <div>
           <label for="username">Username</label><br/>
-          <input type="username" id="emailinput" name="email" placeholder="Enter username" [(ngModel)]="credentials.username">
+          <input type="username" class="forminput" name="email" placeholder="Enter username" [(ngModel)]="credentials.username">
         </div><br/>
         <div class="form-group">
           <label for="password">Password</label><br/>
-          <input type="password" id="forminput" name="password" placeholder="Password" [(ngModel)]="credentials.password">
+          <input type="password" class="forminput" name="password" placeholder="Password" [(ngModel)]="credentials.password">
         </div>
         <button type="submit" class="btn btn-login">Sign in!</button>
       </form>

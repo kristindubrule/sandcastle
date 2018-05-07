@@ -11,14 +11,22 @@ export class RegisterComponent {
     username: '',
     password: ''
   };
+  messages = [];
 
   constructor(private auth: AuthenticationService, private router: Router) {}
 
   register() {
-    this.auth.register(this.credentials).subscribe(() => {
-      this.router.navigate(['']);
+    this.messages = [];
+    this.auth.register(this.credentials).subscribe( data => {
+      if (data['message'] == 'Success') {
+        this.router.navigate(['']);
+      } else {
+        for (let message_text in data['errors']) {
+          this.messages.push(data['errors'][message_text].message);
+        }
+      }
     }, (err) => {
-      console.error(err);
+        this.messages.push('An unknown error occurred');
     });
   }
 }

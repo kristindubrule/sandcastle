@@ -15,18 +15,12 @@ export class HttpService {
   private socket: SocketIOClient.Socket; // The client instance of socket.io
 
   constructor(private _http: HttpClient, private auth: AuthenticationService) { 
-    // this.socket.on('tasks_updated', function(){
-    //   console.log('tasks updated');
-    // });
   }
 
   public initSocket(): void {
     this.socket = io.connect(SERVER_URL, {query: 'token=' + this.auth.getToken()});
-    //this.socket = io.connect(SERVER_URL);
     this.socket.on('connect', function () {
-      console.log('socket authenticated');
     }).on('disconnect', function () {
-      console.log('socket disconnected');
     });
   }
 
@@ -52,7 +46,6 @@ export class HttpService {
 
   addTask(task: any) {
     task.adder = this.auth.getUserDetails()._id;
-    console.log(task.timezone);
     return this._http.post('/api/users/' + this.auth.getUserDetails()._id + '/task', task, { headers: { Authorization: `Bearer ${this.auth.getToken()}` } });
   }
 
@@ -69,7 +62,6 @@ export class HttpService {
   }
 
   sendTask(task: any) {
-    console.log(this.socket.connected);
     task.adder = this.auth.getUserDetails()._id;
     return this._http.post('/api/users/' + task._user + '/task', task, { headers: { Authorization: `Bearer ${this.auth.getToken()}` } });
   }

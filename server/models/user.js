@@ -4,16 +4,23 @@ var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
-    username: { type: String, required: true },
-    email: { type: String },
-    hash: { type: String },
-    salt: { type: String},
+    username: { type: String, required: [true, 'Please enter a username'] },
+    email: { type: String, required: [true, 'Please enter an email'] },
+    hash: { type: String, required: [true, 'Please enter a password that is at least 6 characters, contains at least one digit, one lowercase character and one uppercase character'] },
+    salt: { type: String },
     tasks: [ { type: Schema.Types.ObjectId, ref: 'Task'} ]
 }, {timestamps: true});
 
+UserSchema.methods.checkPassword = function(str) {
+    var re = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+    return re.test(str);
+}
+
 UserSchema.methods.setPassword = function(password){
-    this.salt = crypto.randomBytes(16).toString('hex');
-    this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+    if (this.checkPassword(password)) {
+        this.salt = crypto.randomBytes(16).toString('hex');
+        this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
+    }
 };
 
 UserSchema.methods.validPassword = function(password) {

@@ -22,8 +22,6 @@ export class AppComponent implements OnInit {
     }
 
     this._router.events.subscribe(event => {
-      console.log('Load parent');
-      console.log(event);
       if (event instanceof NavigationEnd) {
         this.page = event.url;
       }

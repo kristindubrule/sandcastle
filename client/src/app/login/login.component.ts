@@ -10,14 +10,20 @@ export class LoginComponent {
     username: '',
     password: ''
   };
+  messages = [];
 
   constructor(private auth: AuthenticationService, private router: Router) {}
 
   login() {
-    this.auth.login(this.credentials).subscribe(() => {
-      this.router.navigate(['']);
+    this.auth.login(this.credentials).subscribe( data => {
+      console.log(data['token']);
+      if (data['token']) {
+        this.router.navigate(['']);
+      } else {
+        this.messages = ['Invalid credentials'];
+      }
     }, (err) => {
-      console.error(err);
+      this.messages = ['Invalid credentials'];
     }); 
   }
 }

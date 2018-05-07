@@ -32,14 +32,11 @@ router.get('/users', auth, function(req, res) {
 });
 
 router.post('/register', function(req,res) {
-    console.log('Adding user');
     let user = new User();
     user.username = req.body.username;
     user.email = req.body.email;
     user.tasks = [];
 
-    console.log(user);
-    console.log(User);
     user.setPassword(req.body.password);
     user.save(function(err) {
         if (err) {
@@ -55,7 +52,6 @@ router.post('/register', function(req,res) {
 });
 
 router.post('/login', function(req,res) {
-    console.log('Logging in user');
     passport.authenticate('local', function(err, user, info) {
         let token;
 
@@ -75,15 +71,6 @@ router.post('/login', function(req,res) {
             res.status(401).json(info);
         }
     })(req, res);
-});
-
-router.get('/tasks/date', function(req,res) {
-    let searchDate = new Date('4/24/2018');
-    Task.find({ 
-        added: { $lte: new Date(searchDate.toISOString()) }
-    }, function(err,tasks) {
-        res.json( { tasks: tasks });
-    });
 });
 
 router.post('/users/:id/task', auth, function(req,res) {
