@@ -16,7 +16,6 @@ export class LoginComponent {
 
   login() {
     this.auth.login(this.credentials).subscribe( data => {
-      console.log(data['token']);
       if (data['token']) {
         this.router.navigate(['']);
       } else {

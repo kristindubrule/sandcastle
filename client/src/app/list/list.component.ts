@@ -48,8 +48,6 @@ export class ListComponent implements OnInit {
   addTask() {
     this.newtask.added = new Date();
     this.newtask.timezone = moment.tz.guess();
-    console.log(this.newtask.timezone);
-    console.log(this.newtask.added);
     let obs = this._httpService.addTask(this.newtask);
     obs.subscribe( data => {
       if (data['errors']) {
@@ -76,7 +74,6 @@ export class ListComponent implements OnInit {
   }
 
   updateTaskDetails(updateObj) {
-    console.log(updateObj);
     let task = this.inputs[updateObj.id];
     task[updateObj.editfield] = updateObj.value;
     this.inputs[updateObj.id] = task;

@@ -22,7 +22,9 @@ var auth = jwt({
 });
 
 router.get('/users', auth, function(req, res) {
-    User.find({}).sort([["username",1]]).exec(function(err,users) {
+    // { qty: { $ne: 20 } }
+    //console.log(auth);
+    User.find({ _id: { $ne: ObjectId(req['payload']['_id'])}}).sort([["username",1]]).exec(function(err,users) {
         if (err) {
             res.json({message: "Error", error: err.errors });
         } else {
@@ -74,26 +76,22 @@ router.post('/login', function(req,res) {
 });
 
 router.post('/users/:id/task', auth, function(req,res) {
+    console.log(req['payload']['_id']);
     User.findOne({_id: req.params.id}, function(err, user) {
         var task = new Task(req.body);
-        console.log(req.body.timezone);
         if (testing) {
             var today = moment.tz(task.added, req.body.timezone);
         } else {
             var today = moment.tz(task.added, req.body.timezone).startOf('day');
         }
-        console.log('Today');
-        console.log(today);
         task.expires = moment(today, req.body.timezone).add(expireIncrement, expireUnit);
-        console.log('Expires');
-        console.log(task.expires);
         task._user = user._id;
         task.save(function (err) {
             if (err) {
                 res.json({message: "Error", errors: task.errors});
             } else {
-                if (task._user != task.adder) {
-                    console.log('for someone else');
+                if (task._user.toString() != task.adder.toString()) {
+                    console.log('for someone else user \'' + task._user + '\' adder \'' + task.adder + '\'');
                 }
                 user.tasks.push(task);
                 user.save(function(err) {

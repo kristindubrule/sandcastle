@@ -8,7 +8,8 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: [true, 'Please enter an email'] },
     hash: { type: String, required: [true, 'Please enter a password that is at least 6 characters, contains at least one digit, one lowercase character and one uppercase character'] },
     salt: { type: String },
-    tasks: [ { type: Schema.Types.ObjectId, ref: 'Task'} ]
+    tasks: [ { type: Schema.Types.ObjectId, ref: 'Task'} ],
+    authorized_users: [ { type: Schema.Types.ObjectId, ref: 'User'}]
 }, {timestamps: true});
 
 UserSchema.methods.checkPassword = function(str) {

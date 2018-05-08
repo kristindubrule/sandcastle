@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../http.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import * as moment from 'moment-timezone';
 
 @Component({
   selector: 'app-send-task',
@@ -9,7 +10,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 })
 export class SendTaskComponent implements OnInit {
   users: any;
-  newtask = { taskText: '', _user: '' };
+  newtask = { taskText: '', _user: '', added: new Date(), timezone: '' };
   message: any;
 
   constructor(
@@ -27,7 +28,6 @@ export class SendTaskComponent implements OnInit {
     let obs = this._httpService.getUsers();
     obs.subscribe( data => {
       if (data['errors']) {
-        console.log(data['errors']);
       } else {
         this.users = data['users'];
       }
@@ -35,12 +35,12 @@ export class SendTaskComponent implements OnInit {
   }
 
   reset() {
-    this.newtask = { taskText: '', _user: '' };
+    this.newtask = { taskText: '', _user: '', added: new Date(), timezone: '' };
   }
 
   sendTask() {
-    console.log('Adding task');
-    console.log(this.newtask);
+    this.newtask.added = new Date();
+    this.newtask.timezone = moment.tz.guess();
     let obs = this._httpService.sendTask(this.newtask);
     obs.subscribe( data => {
       if (data['errors']) {
